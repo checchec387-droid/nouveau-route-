@@ -95,6 +95,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         credentials: 'include',
         body: JSON.stringify({ email, password, requireAdmin })
       });
+      if (!res.ok) {
+        let errMessage = `Erreur serveur (HTTP ${res.status})`;
+        try {
+          const errData = await res.json();
+          if (errData && errData.error) errMessage = errData.error;
+        } catch {
+          // fallback to status text
+          if (res.statusText) errMessage += `: ${res.statusText}`;
+        }
+        return { success: false, error: errMessage };
+      }
       const data = await res.json();
       if (data.success && data.user) {
         if (data.token) {
@@ -108,8 +119,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
       }
       return { success: false, error: data.error, status: data.status };
-    } catch {
-      return { success: false, error: 'Connexion au serveur impossible.' };
+    } catch (err: any) {
+      console.error('[AUTH LOGIN ERROR]', err);
+      return { success: false, error: err?.message ? `Connexion au serveur impossible (${err.message})` : 'Connexion au serveur impossible.' };
     }
   };
 
