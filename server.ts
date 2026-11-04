@@ -34,6 +34,17 @@ async function startServer() {
   // Mount API router
   app.use('/api', apiRouter);
 
+  // Catch-all error handler for /api routes ensuring always JSON response
+  app.use('/api', (err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    console.error('[API ERROR]:', err);
+    if (!res.headersSent) {
+      res.status(500).json({
+        success: false,
+        error: err?.message || 'Erreur interne du serveur'
+      });
+    }
+  });
+
   if (!isProd) {
     // Development mode with Vite middleware
     const vite = await createViteServer({

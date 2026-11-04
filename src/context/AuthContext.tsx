@@ -97,7 +97,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       const data = await res.json().catch(() => null);
       if (!res.ok) {
-        return { success: false, error: data?.error || `Erreur serveur (HTTP ${res.status})` };
+        return {
+          success: false,
+          error: data?.error || (res.status === 500 ? 'Le serveur a répondu par une erreur temporaire. Veuillez recharger la page et réessayer.' : `Erreur serveur (HTTP ${res.status})`)
+        };
       }
       if (data && data.success && data.user) {
         if (data.token) {
@@ -110,7 +113,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           mustChangePassword: !!data.mustChangePassword
         };
       }
-      return { success: false, error: data.error, status: data.status };
+      return { success: false, error: data?.error || 'Échec de connexion.', status: data?.status };
     } catch (err: any) {
       console.error('[AUTH LOGIN ERROR]', err);
       return { success: false, error: err?.message ? `Connexion au serveur impossible (${err.message})` : 'Connexion au serveur impossible.' };
