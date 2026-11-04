@@ -7,7 +7,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
 import { apiRouter } from './server/api';
-import { validateSecurityEnv } from './server/db';
+import { validateSecurityEnv, dbService } from './server/db';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,6 +17,7 @@ async function startServer() {
   // Server refuses to start if ADMIN_INITIAL_PASSWORD (< 12 chars) or ADMIN_RECOVERY_KEY (< 24 chars) are absent or weak
   try {
     validateSecurityEnv();
+    await dbService.ready();
   } catch (err: any) {
     console.error(err.message);
     process.exit(1);

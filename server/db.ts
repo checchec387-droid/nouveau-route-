@@ -290,7 +290,16 @@ class DatabaseService {
             user_email VARCHAR(255) NOT NULL,
             user_name VARCHAR(255),
             details TEXT NOT NULL,
-            ip VARCHAR(100)
+            ip TEXT
+        );
+
+        CREATE TABLE IF NOT EXISTS project_states (
+            id VARCHAR(255) PRIMARY KEY,
+            user_id VARCHAR(255) NOT NULL,
+            project_name VARCHAR(255) NOT NULL,
+            data JSONB NOT NULL,
+            updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
         );
       `);
 
@@ -301,7 +310,7 @@ class DatabaseService {
     }
   }
 
-  private async ready(): Promise<void> {
+  public async ready(): Promise<void> {
     if (this.initPromise) {
       await this.initPromise;
     }
@@ -318,47 +327,42 @@ class DatabaseService {
     }
 
     if (this.isPg && this.pool) {
-      const res = await this.pool.query(
-        'SELECT * FROM users WHERE LOWER(email) = LOWER($1)',
-        [ROOT_ADMIN_EMAIL]
+      console.log(`[AUTH-PG] Synchronizing primary administrator account: ${ROOT_ADMIN_EMAIL}`);
+      const defaultHash = await hashPassword(initialAdminPassword);
+      await this.pool.query(
+        `INSERT INTO users (id, name, email, job_title, role, status, password_hash, organization, must_change_password, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+         ON CONFLICT (id) DO UPDATE SET
+           name = EXCLUDED.name,
+           email = EXCLUDED.email,
+           role = 'SUPERADMIN',
+           status = 'APPROVED',
+           password_hash = EXCLUDED.password_hash,
+           organization = EXCLUDED.organization,
+           must_change_password = false,
+           updated_at = EXCLUDED.updated_at`,
+        [
+          'user-root-admin',
+          'Administrateur Youcef',
+          ROOT_ADMIN_EMAIL,
+          'Expert',
+          'SUPERADMIN',
+          'APPROVED',
+          defaultHash,
+          'Direction Technique & Administration Centrale ARP',
+          false,
+          new Date().toISOString(),
+          new Date().toISOString()
+        ]
       );
-      if (res.rows.length === 0) {
-        console.log(`[AUTH-PG] Bootstrapping primary administrator account: ${ROOT_ADMIN_EMAIL}`);
-        const defaultHash = await hashPassword(initialAdminPassword);
-        await this.pool.query(
-          `INSERT INTO users (id, name, email, job_title, role, status, password_hash, organization, must_change_password, created_at, updated_at)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
-          [
-            'user-root-admin',
-            'Administrateur Youcef',
-            ROOT_ADMIN_EMAIL,
-            'Expert',
-            'SUPERADMIN',
-            'APPROVED',
-            defaultHash,
-            'Direction Technique & Administration Centrale ARP',
-            false,
-            new Date().toISOString(),
-            new Date().toISOString()
-          ]
-        );
-        console.log(`[AUTH-PG] Superadministrator account ready for ${ROOT_ADMIN_EMAIL}`);
-      } else {
-        const existing = res.rows[0];
-        if (existing.role !== 'SUPERADMIN' || existing.status !== 'APPROVED') {
-          await this.pool.query(
-            'UPDATE users SET role = $1, status = $2, updated_at = $3 WHERE id = $4',
-            ['SUPERADMIN', 'APPROVED', new Date().toISOString(), existing.id]
-          );
-        }
-      }
+      console.log(`[AUTH-PG] Superadministrator account ready for ${ROOT_ADMIN_EMAIL}`);
     } else {
       const existing = this.data.users.find(
         u => u.email.toLowerCase() === ROOT_ADMIN_EMAIL.toLowerCase()
       );
+      const defaultHash = await hashPassword(initialAdminPassword);
       if (!existing) {
         console.log(`[AUTH-JSON] Bootstrapping primary administrator account: ${ROOT_ADMIN_EMAIL}`);
-        const defaultHash = await hashPassword(initialAdminPassword);
         const adminUser: UserRecord = {
           id: 'user-root-admin',
           name: 'Administrateur Youcef',
@@ -376,11 +380,12 @@ class DatabaseService {
         this.saveJson();
         console.log(`[AUTH-JSON] Superadministrator account ready for ${ROOT_ADMIN_EMAIL}`);
       } else {
-        if (existing.role !== 'SUPERADMIN' || existing.status !== 'APPROVED') {
-          existing.role = 'SUPERADMIN';
-          existing.status = 'APPROVED';
-          this.saveJson();
-        }
+        existing.role = 'SUPERADMIN';
+        existing.status = 'APPROVED';
+        existing.passwordHash = defaultHash;
+        existing.mustChangePassword = false;
+        existing.updatedAt = new Date().toISOString();
+        this.saveJson();
       }
     }
   }

@@ -7,68 +7,22 @@
       "jobTitle": "Expert",
       "role": "SUPERADMIN",
       "status": "APPROVED",
-      "passwordHash": "4fbad90204993a57397bc8fcb4821a11:37cbcc05ba35309430869a2cfff2a1b4389e98d8c2505d7e5b3babc5082b8a09a8d5257279fa674aa98b30f1277f4c2e96532dc20c7a28d9a50a6d5277390ee2",
+      "passwordHash": "7c6894f762c177710fc34bfeb2e1b8bd:bbfdb021e2aba8c17649753da3030bc34e04d628d7ee0e7927f9d1347c5b82055341c72f1a008b61acd77a2c65e6ef8cc227ffce0166761854df69c826498547",
       "organization": "Direction Technique & Administration Centrale ARP",
       "mustChangePassword": false,
-      "createdAt": "2026-10-14T08:00:00.000Z",
-      "updatedAt": "2026-10-15T12:34:51.485Z",
-      "lastLoginAt": "2026-10-15T12:34:51.485Z"
+      "createdAt": "2026-11-04T14:28:04.614Z",
+      "updatedAt": "2026-11-04T14:28:04.614Z"
     }
   ],
   "sessions": [],
   "activityLogs": [
     {
-      "id": "act-1793799402809-47ac",
-      "timestamp": "2026-11-04T13:36:42.809Z",
-      "type": "LOGIN_FAILED",
+      "id": "act-init-1793802484878",
+      "timestamp": "2026-11-04T14:28:04.614Z",
+      "type": "ADMIN_RECOVERY",
       "userEmail": "youcefyoucefbelallia@gmail.com",
       "userName": "Administrateur Youcef",
-      "details": "Tentative de connexion administrateur : mot de passe erroné",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "act-1793799356040-b1db",
-      "timestamp": "2026-11-04T13:35:56.040Z",
-      "type": "LOGIN_FAILED",
-      "userEmail": "youcefyoucefbelallia@gmail.com",
-      "userName": "Administrateur Youcef",
-      "details": "Tentative de connexion administrateur : mot de passe erroné",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "act-1793799351144-0a57",
-      "timestamp": "2026-11-04T13:35:51.144Z",
-      "type": "LOGIN_FAILED",
-      "userEmail": "youcefyoucefbelallia@gmail.com",
-      "userName": "Administrateur Youcef",
-      "details": "Tentative de connexion administrateur : mot de passe erroné",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "act-1793799185622-f22d",
-      "timestamp": "2026-11-04T13:33:05.622Z",
-      "type": "LOGIN_FAILED",
-      "userEmail": "youcefyoucefbelallia@gmail.com",
-      "userName": "Administrateur Youcef",
-      "details": "Tentative de connexion administrateur : mot de passe erroné",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "act-test-1792662822756",
-      "timestamp": "2026-10-22T09:53:42.756Z",
-      "type": "STATUS_CHANGE",
-      "userEmail": "blocked.engineer.1792662822707@cerema-etudes.fr",
-      "userName": "Ingénieur Bloqué",
-      "details": "[Blocage compte utilisateur] Par : youcefyoucefbelallia@gmail.com | Cible : blocked.engineer.1792662822707@cerema-etudes.fr | Statut : DEACTIVATED | Motif : Audit sécurité",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "act-test-1792662741985",
-      "timestamp": "2026-10-22T09:52:21.985Z",
-      "type": "STATUS_CHANGE",
-      "userEmail": "blocked.engineer.1792662741931@cerema-etudes.fr",
-      "userName": "Ingénieur Bloqué",
-      "details": "[Blocage compte utilisateur] Par : youcefyoucefbelallia@gmail.com | Cible : blocked.engineer.1792662741931@cerema-etudes.fr | Statut : DEACTIVATED | Motif : Audit sécurité",
+      "details": "Réinitialisation complète de la base de données",
       "ip": "127.0.0.1"
     }
   ]
