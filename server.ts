@@ -23,7 +23,9 @@ async function startServer() {
   }
 
   const app = express();
-  const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+  // In AI Studio dev environment, DEFAULT_APP_PORT is 3000 and NGINX proxies to 3000, while PORT may be 8080 (for Cloud Run / Nginx).
+  // Therefore, prefer 3000 if DEFAULT_APP_PORT is 3000, or check for port argument/env var properly.
+  const PORT = process.env.DEFAULT_APP_PORT ? parseInt(process.env.DEFAULT_APP_PORT, 10) : (process.env.APP_PORT ? parseInt(process.env.APP_PORT, 10) : (process.env.PORT && process.env.PORT !== '8080' ? parseInt(process.env.PORT, 10) : 3000));
   const isProd = process.env.NODE_ENV === 'production';
 
   app.use(express.json());

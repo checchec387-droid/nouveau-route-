@@ -18,6 +18,42 @@
   "sessions": [],
   "activityLogs": [
     {
+      "id": "act-1793799402809-47ac",
+      "timestamp": "2026-11-04T13:36:42.809Z",
+      "type": "LOGIN_FAILED",
+      "userEmail": "youcefyoucefbelallia@gmail.com",
+      "userName": "Administrateur Youcef",
+      "details": "Tentative de connexion administrateur : mot de passe erroné",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "act-1793799356040-b1db",
+      "timestamp": "2026-11-04T13:35:56.040Z",
+      "type": "LOGIN_FAILED",
+      "userEmail": "youcefyoucefbelallia@gmail.com",
+      "userName": "Administrateur Youcef",
+      "details": "Tentative de connexion administrateur : mot de passe erroné",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "act-1793799351144-0a57",
+      "timestamp": "2026-11-04T13:35:51.144Z",
+      "type": "LOGIN_FAILED",
+      "userEmail": "youcefyoucefbelallia@gmail.com",
+      "userName": "Administrateur Youcef",
+      "details": "Tentative de connexion administrateur : mot de passe erroné",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "act-1793799185622-f22d",
+      "timestamp": "2026-11-04T13:33:05.622Z",
+      "type": "LOGIN_FAILED",
+      "userEmail": "youcefyoucefbelallia@gmail.com",
+      "userName": "Administrateur Youcef",
+      "details": "Tentative de connexion administrateur : mot de passe erroné",
+      "ip": "127.0.0.1"
+    },
+    {
       "id": "act-test-1792662822756",
       "timestamp": "2026-10-22T09:53:42.756Z",
       "type": "STATUS_CHANGE",
