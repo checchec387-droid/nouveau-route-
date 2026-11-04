@@ -538,7 +538,7 @@ apiRouter.post('/auth/login', async (req: Request, res: Response) => {
     console.error('Login error:', err);
     return res.status(500).json({
       success: false,
-      error: 'Erreur interne lors de la tentative de connexion.'
+      error: `Erreur serveur (${err?.message || 'Erreur interne de base de données'})`
     });
   }
 });

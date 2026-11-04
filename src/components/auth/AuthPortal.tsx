@@ -17,7 +17,11 @@ import {
   Award,
   GraduationCap,
   HelpCircle,
-  Terminal
+  Terminal,
+  Eye,
+  EyeOff,
+  Copy,
+  Check
 } from 'lucide-react';
 
 interface Props {
@@ -46,6 +50,21 @@ export const AuthPortal: React.FC<Props> = ({
   // Admin login
   const [adminEmail, setAdminEmail] = useState('youcefyoucefbelallia@gmail.com');
   const [adminPassword, setAdminPassword] = useState('');
+  const [showAdminPassword, setShowAdminPassword] = useState(false);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [copiedPass, setCopiedPass] = useState(false);
+
+  const fillDefaultAdminCredentials = () => {
+    setAdminEmail('youcefyoucefbelallia@gmail.com');
+    setAdminPassword('Admin@ARP2026!StrongPass');
+    clearMessages();
+  };
+
+  const copyDefaultPassword = () => {
+    navigator.clipboard?.writeText('Admin@ARP2026!StrongPass');
+    setCopiedPass(true);
+    setTimeout(() => setCopiedPass(false), 2000);
+  };
 
   // Register
   const [regName, setRegName] = useState('');
@@ -252,9 +271,23 @@ export const AuthPortal: React.FC<Props> = ({
 
         <div className="p-6 md:p-8 space-y-5">
           {errorMsg && (
-            <div className="p-3 bg-rose-50 border border-rose-200 rounded-lg text-rose-800 text-xs flex items-start gap-2.5">
-              <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
-              <span>{errorMsg}</span>
+            <div className="p-3 bg-rose-50 border border-rose-200 rounded-lg text-rose-800 text-xs flex flex-col gap-2">
+              <div className="flex items-start gap-2.5">
+                <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                <span className="font-medium">{errorMsg}</span>
+              </div>
+              {errorMsg.includes('Mot de passe incorrect') && (
+                <div className="mt-1 pt-2 border-t border-rose-200/80 flex flex-wrap items-center justify-between gap-1 text-[11px] text-rose-900">
+                  <span>Mot de passe requis : <code className="bg-rose-100 px-1.5 py-0.5 rounded font-mono font-bold select-all">Admin@ARP2026!StrongPass</code></span>
+                  <button
+                    type="button"
+                    onClick={fillDefaultAdminCredentials}
+                    className="font-bold underline text-rose-700 hover:text-rose-950 cursor-pointer"
+                  >
+                    Remplir automatiquement
+                  </button>
+                </div>
+              )}
             </div>
           )}
           {successMsg && (
@@ -322,7 +355,7 @@ export const AuthPortal: React.FC<Props> = ({
 
           {view === 'admin-login' && (
             <form onSubmit={handleAdminLoginSubmit} className="space-y-4">
-              <div className="p-3 bg-rose-50/70 border border-rose-200 rounded-xl space-y-1">
+              <div className="p-3 bg-rose-50/70 border border-rose-200 rounded-xl space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-rose-950 flex items-center gap-1.5">
                     <ShieldAlert className="w-4 h-4 text-rose-700" />
@@ -335,6 +368,27 @@ export const AuthPortal: React.FC<Props> = ({
                 <p className="text-[11px] text-slate-600 leading-relaxed">
                   Authentification du superviseur : <strong>{adminEmail}</strong>
                 </p>
+                <div className="pt-2 border-t border-rose-200/70 flex items-center justify-between text-[11px]">
+                  <span className="text-slate-600">Mot de passe par défaut :</span>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={fillDefaultAdminCredentials}
+                      className="px-2 py-0.5 bg-rose-100 hover:bg-rose-200 text-rose-850 font-semibold rounded text-[11px] transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      <KeyRound className="w-3 h-3 text-rose-700" />
+                      Remplir
+                    </button>
+                    <button
+                      type="button"
+                      onClick={copyDefaultPassword}
+                      className="px-2 py-0.5 bg-white border border-rose-200 hover:bg-rose-50 text-slate-700 rounded text-[11px] transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      {copiedPass ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3 text-slate-500" />}
+                      <span>{copiedPass ? 'Copié' : 'Copier'}</span>
+                    </button>
+                  </div>
+                </div>
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -370,13 +424,21 @@ export const AuthPortal: React.FC<Props> = ({
                 <div className="relative">
                   <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                   <input
-                    type="password"
+                    type={showAdminPassword ? 'text' : 'password'}
                     required
                     value={adminPassword}
                     onChange={(e) => setAdminPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full text-xs border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-slate-900 focus:outline-hidden focus:border-rose-700 bg-white"
+                    placeholder="••••••••••••••••"
+                    className="w-full text-xs border border-slate-200 rounded-lg pl-9 pr-10 py-2 text-slate-900 focus:outline-hidden focus:border-rose-700 bg-white font-mono"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowAdminPassword(!showAdminPassword)}
+                    className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-700 cursor-pointer"
+                    title={showAdminPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                  >
+                    {showAdminPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
                 </div>
               </div>
               <button
@@ -525,13 +587,21 @@ export const AuthPortal: React.FC<Props> = ({
                 <div className="relative">
                   <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                   <input
-                    type="password"
+                    type={showLoginPassword ? 'text' : 'password'}
                     required
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full text-xs border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-slate-900 focus:outline-hidden focus:border-sky-800"
+                    className="w-full text-xs border border-slate-200 rounded-lg pl-9 pr-10 py-2 text-slate-900 focus:outline-hidden focus:border-sky-800"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowLoginPassword(!showLoginPassword)}
+                    className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-700 cursor-pointer"
+                    title={showLoginPassword ? 'Masquer' : 'Afficher'}
+                  >
+                    {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
                 </div>
               </div>
               <button

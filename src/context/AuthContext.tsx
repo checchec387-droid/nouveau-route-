@@ -95,19 +95,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         credentials: 'include',
         body: JSON.stringify({ email, password, requireAdmin })
       });
+      const data = await res.json().catch(() => null);
       if (!res.ok) {
-        let errMessage = `Erreur serveur (HTTP ${res.status})`;
-        try {
-          const errData = await res.json();
-          if (errData && errData.error) errMessage = errData.error;
-        } catch {
-          // fallback to status text
-          if (res.statusText) errMessage += `: ${res.statusText}`;
-        }
-        return { success: false, error: errMessage };
+        return { success: false, error: data?.error || `Erreur serveur (HTTP ${res.status})` };
       }
-      const data = await res.json();
-      if (data.success && data.user) {
+      if (data && data.success && data.user) {
         if (data.token) {
           localStorage.setItem('arp_token', data.token);
         }

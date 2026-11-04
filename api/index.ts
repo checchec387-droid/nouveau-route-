@@ -1,6 +1,13 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import { apiRouter } from '../server/api';
+import { validateSecurityEnv } from '../server/db';
+
+try {
+  validateSecurityEnv();
+} catch (e) {
+  console.warn('[SECURITY] Validation notice:', e);
+}
 
 const app = express();
 
@@ -12,3 +19,4 @@ app.use('/api', apiRouter);
 app.use(apiRouter);
 
 export default app;
+

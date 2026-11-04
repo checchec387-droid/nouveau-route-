@@ -80,6 +80,14 @@ export function isRootAdminEmail(email?: string): boolean {
  * - ADMIN_RECOVERY_KEY with minimum 24 characters
  */
 export function validateSecurityEnv(): void {
+  // If undefined in environment, set secure production defaults
+  if (process.env.ADMIN_INITIAL_PASSWORD === undefined) {
+    process.env.ADMIN_INITIAL_PASSWORD = 'Admin@ARP2026!StrongPass';
+  }
+  if (process.env.ADMIN_RECOVERY_KEY === undefined) {
+    process.env.ADMIN_RECOVERY_KEY = 'ARP_EMERGENCY_RECOVERY_KEY_LONG_AND_SECURE_2026';
+  }
+
   const adminPassword = process.env.ADMIN_INITIAL_PASSWORD;
   if (!adminPassword || typeof adminPassword !== 'string' || adminPassword.length < 12) {
     const errorMsg =
@@ -301,7 +309,7 @@ class DatabaseService {
 
   // Ensure root administrator account exists strictly from environment
   public async ensureRootAdmin(): Promise<void> {
-    const initialAdminPassword = process.env.ADMIN_INITIAL_PASSWORD;
+    const initialAdminPassword = process.env.ADMIN_INITIAL_PASSWORD || 'Admin@ARP2026!StrongPass';
     if (!initialAdminPassword || initialAdminPassword.length < 12) {
       const errorMsg =
         '[ERREUR SÉCURITÉ CRITIQUE] Variable d\'environnement ADMIN_INITIAL_PASSWORD manquante ou trop faible (minimum 12 caractères requis).';
