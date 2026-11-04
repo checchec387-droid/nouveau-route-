@@ -1,0 +1,6 @@
+{
+  "name": "ARP Road Design Expert - Conception Routière & Ingénierie Géométrique",
+  "description": "Application professionnelle d'ingénierie routière selon le guide ARP du Cerema (2022) avec contrôle d'accès sécurisé sans e-mail, validation administrative et modules de calculs géométriques.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

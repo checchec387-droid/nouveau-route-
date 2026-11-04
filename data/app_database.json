@@ -1,0 +1,39 @@
+{
+  "users": [
+    {
+      "id": "user-root-admin",
+      "name": "Administrateur Youcef",
+      "email": "youcefyoucefbelallia@gmail.com",
+      "jobTitle": "Expert",
+      "role": "SUPERADMIN",
+      "status": "APPROVED",
+      "passwordHash": "4fbad90204993a57397bc8fcb4821a11:37cbcc05ba35309430869a2cfff2a1b4389e98d8c2505d7e5b3babc5082b8a09a8d5257279fa674aa98b30f1277f4c2e96532dc20c7a28d9a50a6d5277390ee2",
+      "organization": "Direction Technique & Administration Centrale ARP",
+      "mustChangePassword": false,
+      "createdAt": "2026-10-14T08:00:00.000Z",
+      "updatedAt": "2026-10-15T12:34:51.485Z",
+      "lastLoginAt": "2026-10-15T12:34:51.485Z"
+    }
+  ],
+  "sessions": [],
+  "activityLogs": [
+    {
+      "id": "act-test-1792662822756",
+      "timestamp": "2026-10-22T09:53:42.756Z",
+      "type": "STATUS_CHANGE",
+      "userEmail": "blocked.engineer.1792662822707@cerema-etudes.fr",
+      "userName": "Ingénieur Bloqué",
+      "details": "[Blocage compte utilisateur] Par : youcefyoucefbelallia@gmail.com | Cible : blocked.engineer.1792662822707@cerema-etudes.fr | Statut : DEACTIVATED | Motif : Audit sécurité",
+      "ip": "127.0.0.1"
+    },
+    {
+      "id": "act-test-1792662741985",
+      "timestamp": "2026-10-22T09:52:21.985Z",
+      "type": "STATUS_CHANGE",
+      "userEmail": "blocked.engineer.1792662741931@cerema-etudes.fr",
+      "userName": "Ingénieur Bloqué",
+      "details": "[Blocage compte utilisateur] Par : youcefyoucefbelallia@gmail.com | Cible : blocked.engineer.1792662741931@cerema-etudes.fr | Statut : DEACTIVATED | Motif : Audit sécurité",
+      "ip": "127.0.0.1"
+    }
+  ]
+}
